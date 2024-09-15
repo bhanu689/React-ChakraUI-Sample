@@ -75,6 +75,8 @@ const UserList = () => {
   const countries = Array.from(new Set(users.map(user => user.location.country)))
     .sort((a, b) => a.localeCompare(b));  // Sort countries alphabetically
 
+  const totalPages = Math.ceil(filteredUsers.length / recordsPerPage);
+
   if (loading) {
     return (
       <Center h="100vh">
@@ -139,11 +141,11 @@ const UserList = () => {
       </Table>
 
       <HStack spacing={4}>
-        <Button  colorScheme='teal' variant='solid' onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} isDisabled={currentPage === 1}>
+        <Button colorScheme='teal' variant='solid' onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} isDisabled={currentPage === 1}>
           Previous
         </Button>
-        <Text>Page {currentPage}</Text>
-        <Button  colorScheme='teal' variant='solid' onClick={() => setCurrentPage(prev => prev + 1)} isDisabled={currentPage === Math.ceil(filteredUsers.length / recordsPerPage)}>
+        <Text>Page {currentPage} of {totalPages}</Text>
+        <Button colorScheme='teal' variant='solid' onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} isDisabled={currentPage === totalPages}>
           Next
         </Button>
       </HStack>
